@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To Do List By HussainXPython</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      #inputField {
+        background-color: #000000dc;
+        color: white;
+      }
+      .HxP {
+        border-radius: 5px;
+      }
+      #saveButton:hover {
+        color: whitesmoke;
+        background-color: green;
+        transition: 10ms ease-in-out;
+      }
+      #addButton:hover {
+        color: whitesmoke;
+        background-color: blue;
+        transition: 10ms ease-in-out;
+      }
+      #deleteButton:hover {
+        color: whitesmoke;
+        background-color: red;
+        transition: 10ms ease-in-out;
+      }
+      #toggleDarkModeButton:hover {
+        color: whitesmoke;
+        background-color: goldenrod;
+        transition: 10ms ease-in-out;
+      }
+    </style>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const addButton = document.getElementById("addButton");
+        const deleteButton = document.getElementById("deleteButton");
+        const saveButton = document.getElementById("saveButton");
+        const toggleDarkModeButton = document.getElementById(
+          "toggleDarkModeButton"
+        );
+        const inputField = document.getElementById("inputField");
+        const listContainer = document.getElementById("listContainer");
+        const body = document.body;
+
+        addButton.addEventListener("click", () => {
+          const listItem = document.createElement("div");
+          listItem.className = "border-b border-gray-300 p-2 cursor-pointer";
+          listItem.textContent = inputField.value;
+          listItem.addEventListener("click", () => {
+            listItem.classList.toggle("bg-gray-200");
+          });
+          listContainer.appendChild(listItem);
+          inputField.value = "";
+        });
+
+        deleteButton.addEventListener("click", () => {
+          const selectedItems = listContainer.querySelectorAll(".bg-gray-200");
+          selectedItems.forEach((item) => item.remove());
+        });
+
+        saveButton.addEventListener("click", () => {
+          const listItems = listContainer.querySelectorAll("div");
+          const listArray = Array.from(listItems).map(
+            (item) => item.textContent
+          );
+          const fileName = prompt("Enter the name of the file:", "list.txt");
+          if (fileName) {
+            const blob = new Blob([listArray.join("\n")], {
+              type: "text/plain",
+            });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = fileName;
+            link.click();
+          }
+        });
+
+        toggleDarkModeButton.addEventListener("click", () => {
+          body.classList.toggle("bg-gray-900");
+          body.classList.toggle("text-white");
+        });
+      });
+    </script>
+  </head>
+  <body class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="space-y-4">
+      <div class="border-2 border-black p-4 HxP">
+        <input
+          id="inputField"
+          type="text"
+          class="w-full p-2 HxP"
+          placeholder="WRITE LIST HERE"
+        />
+      </div>
+      <div class="border-2 border-black p-4 h-64 overflow-y-auto HxP">
+        <div id="listContainer" class="space-y-2">
+          <!-- List items will be added here -->
+        </div>
+      </div>
+      <div class="flex justify-between space-x-4">
+        <button
+          id="addButton"
+          class="border-2 border-black p-4 text-blue-600 font-bold HxP"
+        >
+          ADD
+        </button>
+        <button
+          id="deleteButton"
+          class="border-2 border-black p-4 text-red-600 font-bold HxP"
+        >
+          DELETE
+        </button>
+        <button
+          id="saveButton"
+          class="border-2 border-black p-4 text-green-600 font-bold HxP"
+        >
+          SAVE
+        </button>
+        <button
+          id="toggleDarkModeButton"
+          class="border-2 border-black p-4 text-yellow-600 font-bold HxP"
+        >
+          TOGGLE DARK MODE
+        </button>
+      </div>
+    </div>
+  </body>
+</html>
